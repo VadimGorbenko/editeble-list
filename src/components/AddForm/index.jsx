@@ -34,9 +34,7 @@ class AddForm extends Component{
 }
 
 export default connect(
-	state => ({
-		testStore:state
-	}),
+	state => ({}),
 	dispatch => ({
 		onAddFIO: (newFIO) =>{
 			dispatch({type:"ADD_FIO", payload:newFIO})
