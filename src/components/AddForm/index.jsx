@@ -7,23 +7,24 @@ import {addFIO} from '../../actions/addFIO.js'
 class AddForm extends Component{
 	render(){
 		return(
-			<form onSubmit = {this.isValid.bind(this)}>
+			<form onSubmit = {this.addFIO.bind(this)}>
 	      <label>Фамилия
-	        <input type="text" ref="lastName" defaultValue="Фамилия" placeholder="Фамилия"/>
+	        <input type="text" ref="lastName" defaultValue="" placeholder="Фамилия" required="required" pattern="^[А-Яа-яЁё\s]+$" />
 	      </label>
 	      <label>Имя
-	        <input type="text" ref="firstName" defaultValue="Имя" placeholder="Имя"/>
+	        <input type="text" ref="firstName" defaultValue="" placeholder="Имя" required="required" pattern="^[А-Яа-яЁё\s]+$"/>
 	      </label>
 	      <label>Отчество
-	        <input type="text" ref="middleName" defaultValue="Отчество" placeholder="Отчество"/>
+	        <input type="text" ref="middleName" defaultValue="" placeholder="Отчество" required="required" pattern="^[А-Яа-яЁё\s]+$" />
 	      </label>
-	      <input type="submit" defaultValue="Добавить"/>
+	      <input type="submit" defaultValue="Добавить" />
    		</form>
 		)
 	}
-	isValid = (event) => {
+	
+	addFIO = (event) => {
 		event.preventDefault()
-		console.log(this)
+		console.log(this)	
 	}
 }
 
