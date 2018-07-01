@@ -5,7 +5,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux'
 import combinedReducers from './reducers/'
 
-const store = createStore(combinedReducers)
+const store = createStore(combinedReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 ReactDOM.render(
 	<Provider store={store}>
