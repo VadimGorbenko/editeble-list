@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {addFIO} from '../../actions/addFIO.js'
 
 
 class AddForm extends Component{
@@ -22,14 +20,26 @@ class AddForm extends Component{
 		)
 	}
 	
-	addFIO = (event) => {
+	addFIO(event){
 		event.preventDefault()
-		console.log(this)	
+		let newFIO = {
+			"id":new Date(),
+			"lastName":this.refs.lastName.value,
+			"firstName":this.refs.firstName.value,
+			"middleName":this.refs.middleName.value
+		}
+		this.props.onAddFIO(newFIO)
+		this.refs.lastName.value = this.refs.firstName.value = this.refs.middleName.value = ""
 	}
 }
 
-function matchDispatchToProps(dispatch){
-  return bindActionCreators({addFIO:addFIO}, dispatch)
-}
-
-export default connect(matchDispatchToProps)(AddForm)
+export default connect(
+	state => ({
+		testStore:state
+	}),
+	dispatch => ({
+		onAddFIO: (newFIO) =>{
+			dispatch({type:"ADD_FIO", payload:newFIO})
+		}
+	})
+)(AddForm)
