@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {addFIO} from '../../actions/addFIO.js'
 
-export default class AddForm extends Component{
+
+class AddForm extends Component{
 	render(){
 		return(
 			<form onSubmit = {this.isValid.bind(this)}>
@@ -22,3 +26,9 @@ export default class AddForm extends Component{
 		console.log(this)
 	}
 }
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({addFIO:addFIO}, dispatch)
+}
+
+export default connect(matchDispatchToProps)(AddForm)
