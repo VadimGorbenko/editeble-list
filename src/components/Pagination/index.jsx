@@ -16,7 +16,7 @@ class Pagination extends Component{
     for (let i = 1; i <= Math.ceil(this.props.list.length/10); i++) {
       paginationElems.push(
         <li key={i} className="list-block__pagination-item">
-          <button className="list-block__pagination-link" aria-label={`Перейти на страницу № ${i}`}><Link to={`${i}`} onClick={this.changePage.bind(this)}>{i}</Link></button>
+          <Link to={`${i}`} className="list-block__pagination-link" aria-label={`Перейти на страницу № ${i}`} onClick={this.changePage.bind(this)}>{i}</Link>
         </li>
       )
     }
@@ -30,13 +30,7 @@ class Pagination extends Component{
     if (this.state.elemsCounter>10) {
   		return(
           <ul className="list-block__pagination">
-            <li className="list-block__pagination-item">
-              <button className="list-block__pagination-link" aria-label="Предыдущая страница">Предыдущая</button>
-            </li>
             {this.showPagesNumber()}
-            <li className="list-block__pagination-item">
-              <button className="list-block__pagination-link" aria-label="Следующая страница">Следующая</button>
-            </li>
           </ul>
   		)
     }

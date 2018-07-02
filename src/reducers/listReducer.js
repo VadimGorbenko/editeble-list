@@ -119,12 +119,12 @@ let initialState = [
 		"firstName":"Алексей",
 		"middleName":"Вадимович"
 	},
-	{
-		"id":21,
-		"lastName":"Васильев",
-		"firstName":"Роман",
-		"middleName":"Романович"
-	},
+	// {
+	// 	"id":21,
+	// 	"lastName":"Васильев",
+	// 	"firstName":"Роман",
+	// 	"middleName":"Романович"
+	// },
 	// {
 	// 	"id":22,
 	// 	"lastName":"Смирнов",
@@ -200,11 +200,21 @@ let initialState = [
 ]
 
 export default function (state=initialState, action){
-	if (action.type==="ADD_FIO") {
-		return [
-			...state,
-			action.payload
-		]
+	switch (action.type) {
+		case "ADD_FIO":
+			return [
+				...state,
+				action.payload
+			]
+			break;
+		case "DELETE_FIO":
+			return [
+				...state,
+				action.payload
+			]
+			break;
+		default:
+			return state
+			break;
 	}
-	return state
 }

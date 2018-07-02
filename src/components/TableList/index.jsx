@@ -4,13 +4,26 @@ import {connect} from 'react-redux'
 
 class TableList extends Component{
   state = {
-    page: this.props.pageNumber[this.props.pageNumber.length-1]
+    page: this.props.pageNumber[this.props.pageNumber.length-1],
+    isEditebla:false
   }
 
   componentWillReceiveProps(nextProps){
     if (nextProps.pageNumber.length !== this.props.pageNumber.length){
       this.setState({page: nextProps.pageNumber[nextProps.pageNumber.length-1]})
     }
+  }
+
+  deleteFIO(event){
+      let elemId = event.currentTarget.dataset.elemId
+      for (let i = 0; i <= this.props.list.length-1; i++) {
+        if (this.props.list[i].id==elemId) {
+          var elemIndexInArray = this.props.list.indexOf(this.props.list[i])
+          break
+        }
+      }
+      console.log(elemIndexInArray)
+      this.props.onDeleteFIO(this.props.list.splice(elemIndexInArray,1))
   }
 
   showList(){
@@ -26,7 +39,7 @@ class TableList extends Component{
       return(
         <tr key={listElem.id} className="list-block__table-row">
           <td className="list-block__table-cell">
-            <button className="btn btn_delete" aria-label="Удалить">
+            <button data-elem-id={listElem.id} className="btn btn_delete" aria-label="Удалить" onClick={this.deleteFIO.bind(this)}>
               <svg x="0px" y="0px" width="20px" height="20px" viewBox="0 0 774.266 774.266">
                 <path d="M640.35,91.169H536.971V23.991C536.971,10.469,526.064,0,512.543,0c-1.312,0-2.187,0.438-2.614,0.875
                 C509.491,0.438,508.616,0,508.179,0H265.212h-1.74h-1.75c-13.521,0-23.99,10.469-23.99,23.991v67.179H133.916
@@ -42,19 +55,19 @@ class TableList extends Component{
             </button>
           </td>
           <td className="list-block__table-cell">
-            <span className='list-block__table-cell-text'>{listElem.lastName}</span>
-            <input type="text" className='list-block__table-cell-input visibility-hidden' defaultValue={listElem.lastName} placeholder={listElem.lastName}/>
+            <span className={'list-block__table-cell-text' + (this.state.editeble ? ' visibility-hidden' : '')}>{listElem.firstName}</span>
+            <input type="text" className={'list-block__table-cell-input' + (!this.state.editeble ? ' visibility-hidden' : '')} defaultValue={listElem.firstName} placeholder={listElem.firstName}/>
           </td>
           <td className="list-block__table-cell">
-            <span className='list-block__table-cell-text'>{listElem.firstName}</span>
-            <input type="text" className='list-block__table-cell-input visibility-hidden' defaultValue={listElem.firstName} placeholder={listElem.firstName}/>
+            <span className={'list-block__table-cell-text' + (this.state.editeble ? ' visibility-hidden' : '')}>{listElem.lastName}</span>
+            <input type="text" className={'list-block__table-cell-input' + (!this.state.editeble ? ' visibility-hidden' : '')} defaultValue={listElem.lastName} placeholder={listElem.lastName}/>
           </td>
           <td className="list-block__table-cell">
-            <span className='list-block__table-cell-text'>{listElem.middleName}</span>
-            <input type="text" className='list-block__table-cell-input visibility-hidden' defaultValue={listElem.middleName} placeholder={listElem.middleName}/>
+            <span className={'list-block__table-cell-text' + (this.state.editeble ? ' visibility-hidden' : '')}>{listElem.middleName}</span>
+            <input type="text" className={'list-block__table-cell-input' + (!this.state.editeble ? ' visibility-hidden' : '')} defaultValue={listElem.middleName} placeholder={listElem.middleName}/>
           </td>
           <td className="list-block__table-cell">
-            <button className='btn btn_edite' aria-label="Редактировать" >
+           <button className={'btn' + (this.state.editeble ? ' btn_edite-active' : ' btn_edite')} aria-label="Редактировать" onClick = {this.editTableListElem}>
               <svg x="0px" y="0px" width="20px" height="20px" viewBox="0 0 32 32">
                 <path d="M30.276,1.722C29.168,0.611,27.69,0,26.121,0s-3.045,0.61-4.154,1.72L4.294,19.291c-0.105,0.104-0.185,0.229-0.235,0.367
                 l-4,11c-0.129,0.355-0.046,0.756,0.215,1.031C0.466,31.891,0.729,32,1,32c0.098,0,0.196-0.014,0.293-0.044l9.949-3.052
@@ -79,16 +92,22 @@ class TableList extends Component{
       <table className="list-block__table" aria-label="Редактируемая таблица с ФИО">
         <tbody>
           <tr className="list-block__table-row">
-            <th className="list-block__table-column-title">Удалить</th>
-            <th className="list-block__table-column-title">Фамилия</th>
-            <th className="list-block__table-column-title">Имя</th>
-            <th className="list-block__table-column-title">Отчество</th>
-            <th className="list-block__table-column-title">Редактировать</th>
+            <th className="list-block__table-cell list-block__table-cell_title">Удалить</th>
+            <th className="list-block__table-cell list-block__table-cell_title">Фамилия</th>
+            <th className="list-block__table-cell list-block__table-cell_title">Имя</th>
+            <th className="list-block__table-cell list-block__table-cell_title">Отчество</th>
+            <th className="list-block__table-cell list-block__table-cell_title">Редактировать</th>
           </tr>
           {this.showList()}
         </tbody>
       </table>
     )
+  }
+  editTableListElem = () => {
+    console.log("Редактировать") 
+    this.setState({
+      editeble:!this.state.editeble
+    })
   }
 }
 
@@ -99,4 +118,9 @@ function mapStateToProps (state){
   }
 }
 
-export default connect(mapStateToProps)(TableList)
+export default connect(mapStateToProps,
+  dispatch => ({
+    onDeleteFIO: (newArray) =>{
+      dispatch({type:"DELETE_FIO", payload:newArray})
+    }
+  }))(TableList)

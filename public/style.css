@@ -1,0 +1,50 @@
+.list-block__table{
+	margin-top: 50px;
+}
+
+.list-block__table,.list-block__table-cell{
+	border-collapse: collapse;
+	border: 1px solid black;
+	
+}
+
+.list-block__table-cell{
+	text-align: center;
+	padding: 5px;
+}
+
+.list-block__table-cell-input{
+	width: 100%;
+	max-width: 100%;
+}
+
+.visibility-hidden{
+	position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
+.btn{
+	padding: 5px;
+	border:none;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.btn svg {
+	fill:white;
+}
+
+.btn_delete{
+	background-color: red;
+}
+
+.btn_edite{
+	background-color: blue;
+}
+
+.btn_edite-active{
+	background-color: green;
+}
