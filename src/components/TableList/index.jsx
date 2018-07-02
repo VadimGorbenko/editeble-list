@@ -3,8 +3,26 @@ import {connect} from 'react-redux'
 
 
 class TableList extends Component{
+  state = {
+    page: this.props.pageNumber[this.props.pageNumber.length-1]
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.pageNumber.length !== this.props.pageNumber.length){
+      this.setState({page: nextProps.pageNumber[nextProps.pageNumber.length-1]})
+    }
+  }
+
   showList(){
-    return this.props.list.map((listElem)=>{
+    let pageNumber = this.state.page
+    let elemstToShow = []
+    if (pageNumber*10-10 === 0) {
+      elemstToShow = this.props.list.slice(0,10)
+    }
+    else{
+      elemstToShow = this.props.list.slice(pageNumber*10-10,pageNumber*10)
+    }
+    return elemstToShow.map((listElem)=>{
       return(
         <tr key={listElem.id} className="list-block__table-row">
           <td className="list-block__table-cell">
@@ -76,7 +94,8 @@ class TableList extends Component{
 
 function mapStateToProps (state){
   return{
-    list: state.list
+    list: state.list,
+    pageNumber: state.pageNumber
   }
 }
 

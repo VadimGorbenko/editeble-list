@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 class Pagination extends Component{
@@ -15,11 +16,15 @@ class Pagination extends Component{
     for (let i = 1; i <= Math.ceil(this.props.list.length/10); i++) {
       paginationElems.push(
         <li key={i} className="list-block__pagination-item">
-          <button className="list-block__pagination-link" aria-label={`Перейти на страницу № ${i}`}>{i}</button>
+          <button className="list-block__pagination-link" aria-label={`Перейти на страницу № ${i}`}><Link to={`${i}`} onClick={this.changePage.bind(this)}>{i}</Link></button>
         </li>
       )
     }
     return paginationElems
+  }
+  changePage(event){
+    let pageNumber = event.target.textContent
+    this.props.onChangePage(pageNumber)
   }
 	render(){
     if (this.state.elemsCounter>10) {
@@ -41,8 +46,14 @@ class Pagination extends Component{
 
 function mapStateToProps (state){
   return{
-    list: state.list
+    list: state.list,
+    pageNumber: state.pageNumber
   }
 }
 
-export default connect(mapStateToProps)(Pagination)
+export default connect(mapStateToProps,
+  dispatch => ({
+    onChangePage: (pageNumber) =>{
+      dispatch({type:"CHANGE_PAGE", payload:pageNumber})
+    }
+  }))(Pagination)
